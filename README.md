@@ -1,27 +1,31 @@
-Documentação do Projeto
-  Este é um projeto simples, solicitado em sala pelo professor Diego Addan da disciplina de Arquitetura de Software (AS64B), o projeto tem como finalidade o desenvolvimento de um sistema simples de gerenciamento de contatos em node.js.
-  Tem como funcionalidades: Adcionar, remover, listar e buscar contatos.
+# Gerenciador de Contatos em Node.js
 
-Padrões de projeto utilizados:
+Este é um projeto simples desenvolvido para a disciplina de Arquitetura de Software (AS64B), ministrada pelo professor Diego Addan. O objetivo do projeto é criar um sistema básico de gerenciamento de contatos utilizando Node.js.
 
-Strategy:
-   O padrão foi escolhido para implementar diferentes estratégias de busca de contatos. Temos presente dentro do nosso código, uma classe chamada BuscaContatoStrategy que é uma interface comum para todas estratégias, neste projeto, utilizei a estratégia de busca por nome.
-   A principal vantagem ao utilizar o strategy é que ele permite que o algoritmo de busca seja alterado dinamicamente. Tornando o sistema mais flexível e e fácil de estender. 
-   Um exemplo da principal vantagem é que caso no futuro, quisermos adicionar a capacidade de buscar por telefone, podemos simplesmente criar uma nova classe que implementa a interface BuscaContatoStrategy
+## Funcionalidades
 
-Facade:
-  O padrão foi escolhido devido a facilidade na utilização, ele fornece uma interface simplificada para o sistema de gerenciamento de contatos. Temos no nosso projeto a classe GerenciadorContatosFacade que fonece métodos como adiconar, remover, listar e buscar contatos. 
-  A principal vantagem é que ele simplifica o entendimento do código, fazendo com que, os possíveis usuários, não se preocupem com o detalhe de como é realizado cada método, só utilizem o facade como unico ponto de entrada para o sistema.
+O sistema oferece as seguintes funcionalidades:
 
+- Adicionar contatos
+- Remover contatos
+- Listar contatos
+- Buscar contatos por nome
 
-Como usar?
+## Padrões de Projeto Utilizados
 
-  Baixe o código
-  instale o pacote do node com o comando "npm init"
-  Execute o arquivo com o comando "node app.js"
-  Abra no seu navegador o seguinte caminho "localhost:3000"
-  Recarregue a página e olhe no terminal da sua IDE
-  Interaja com o menu de opções. Podendo escolher a opção digitando o número correspondente
-  
-  
-   
+### Strategy
+
+O padrão Strategy foi escolhido para implementar diferentes estratégias de busca de contatos. A classe `BuscaContatoStrategy` atua como uma interface comum para todas as estratégias. Neste projeto, a estratégia de busca por nome foi implementada. A principal vantagem do padrão Strategy é a capacidade de alterar dinamicamente o algoritmo de busca, tornando o sistema mais flexível e fácil de estender. Por exemplo, caso seja desejado adicionar a capacidade de busca por telefone no futuro, basta criar uma nova classe que implemente a interface `BuscaContatoStrategy`.
+
+### Facade
+
+O padrão Facade foi escolhido devido à sua facilidade de uso. Ele fornece uma interface simplificada para o sistema de gerenciamento de contatos. A classe `GerenciadorContatosFacade` oferece métodos como adicionar, remover, listar e buscar contatos. A principal vantagem do Facade é simplificar o entendimento do código, permitindo que os usuários não precisem se preocupar com os detalhes de implementação de cada método, utilizando o Facade como único ponto de entrada para o sistema.
+
+## Como Usar
+
+1. Baixe o código.
+2. Instale os pacotes do Node.js com o comando `npm install`.
+3. Execute o arquivo com o comando `node app.js`.
+4. Abra o navegador e acesse o seguinte endereço: `localhost:3000`.
+5. Recarregue a página e acompanhe o terminal da sua IDE.
+6. Interaja com o menu de opções, digitando o número correspondente à opção desejada.
