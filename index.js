@@ -1,23 +1,16 @@
 module.exports = () =>{
 
 
-
+    //Utilização do readline para que o programa seja interativo
     const readline = require('readline');
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
 
-    /**
-     * Classe que representa um contato.
-     */
+
     class Contato {
-        /**
-         * Cria um novo contato.
-         * @param {string} nome - O nome do contato.
-         * @param {string} telefone - O telefone do contato.
-         * @param {string} email - O email do contato.
-         */
+        //Aqui basicamente ele cria um novo contato, com  os seguintes atributos: nome, telefone e email
         constructor(nome, telefone, email) {
             this.nome = nome;
             this.telefone = telefone;
@@ -25,68 +18,42 @@ module.exports = () =>{
         }
     }
 
-    /**
-     * Classe abstrata para estratégias de busca de contatos.
-     */
+    //Aqui utilizo o padrão de projeto Strategy, onde crio uma classe que vai implementar estratégias de busca
     class BuscaContatoStrategy {
-        /**
-         * Busca um contato.
-         * @param {Array} contatos - A lista de contatos.
-         * @param {string} nome - O nome do contato a ser buscado.
-         * @throws {Error} Lança um erro se o método não for implementado.
-         */
+        
         buscar(contatos, nome) {
             throw new Error("Método 'buscar' deve ser implementado");
         }
     }
 
-    /**
-     * Estratégia de busca de contatos por nome.
-     * @extends BuscaContatoStrategy
-     */
+    //Estratégia de busca por nome
     class BuscaContatoPorNomeStrategy extends BuscaContatoStrategy {
-        /**
-         * Busca um contato por nome.
-         * @param {Array} contatos - A lista de contatos.
-         * @param {string} nome - O nome do contato a ser buscado.
-         * @returns {Array} A lista de contatos que correspondem ao nome.
-         */
+        
+        //Busca um contato pelo nome
         buscar(contatos, nome) {
             return contatos.filter(contato => contato.nome.toLowerCase().includes(nome.toLowerCase()));
         }
     }
 
-    /**
-     * Classe que gerencia contatos.
-     */
+   //Classe que gerencia os contatos
     class GerenciadorContatos {
-        /**
-         * Cria um novo gerenciador de contatos.
-         * @param {BuscaContatoStrategy} buscaContatoStrategy - A estratégia de busca de contatos.
-         */
+        //Aqui eu crio um array de contatos e defino a estratégia de busca como buscaContatoPorNomeStrategy
         constructor(buscaContatoStrategy = new BuscaContatoPorNomeStrategy()) {
             this.contatos = [];
             this.buscaContatoStrategy = buscaContatoStrategy;
         }
 
-        /**
-         * Adiciona um contato.
-         * @param {string} nome - O nome do contato.
-         * @param {string} telefone - O telefone do contato.
-         * @param {string} email - O email do contato.
-         */
+        
+        //Aqui eu adiciono um novo contato
         adicionarContato(nome, telefone, email) {
             const novoContato = new Contato(nome, telefone, email);
             this.contatos.push(novoContato);
             console.log(`Contato ${nome} adicionado com sucesso.`);
         }
 
-        /**
-         * Remove um contato.
-         * @param {string} nome - O nome do contato.
-         */
+        //Função de remover
         removerContato(nome) {
-            const index = this.contatos.findIndex(contato => contato.nome === nome);
+            const index = this.contatos.findIndex(contato => contato.nome === nome); //Percorre o array contatos
             if (index !== -1) {
                 this.contatos.splice(index, 1);
                 console.log(`Contato ${nome} removido com sucesso. \n`);
@@ -95,9 +62,7 @@ module.exports = () =>{
             }
         }
 
-        /**
-         * Lista todos os contatos.
-         */
+       //Função de listar
         listarContatos() {
             console.log("Lista de Contatos:");
             this.contatos.forEach(contato => {
@@ -105,12 +70,9 @@ module.exports = () =>{
             });
         }
 
-        /**
-         * Busca um contato.
-         * @param {string} nome - O nome do contato.
-         */
+        //Aqui eu busco o contato pelo nome, note que abaixo tenho a chamada da classe buscaContatoStrategy, no qual eu defino acima 
         buscarContato(nome) {
-            const resultado = this.buscaContatoStrategy.buscar(this.contatos, nome);
+            const resultado = this.buscaContatoStrategy.buscar(this.contatos, nome); // Aqui
             console.log(`Resultado da busca por ${nome}:`);
             if (resultado.length > 0) {
                 resultado.forEach(contato => {
@@ -122,63 +84,46 @@ module.exports = () =>{
         }
     }
 
-    /**
-     * Classe que fornece uma fachada para gerenciar contatos.
-     */
+    //Aqui eu utilizo o padrão de projetos Facade, onde eu crio uma classe que vai ser responsável por gerenciar os gerenciadores
     class GerenciadorContatosFacade {
         constructor() {
             this.gerenciadores = [];
         }
 
-        /**
-         * Adiciona um gerenciador de contatos.
-         * @param {GerenciadorContatos} gerenciador - O gerenciador de contatos.
-         */
+        //Adiciona um gerenciador
         adicionarGerenciador(gerenciador) {
             this.gerenciadores.push(gerenciador);
         }
 
-        /**
-         * Adiciona um contato.
-         * @param {string} nome - O nome do contato.
-         * @param {string} telefone - O telefone do contato.
-         * @param {string} email - O email do contato.
-         */
         adicionarContato(nome, telefone, email) {
             this.gerenciadores.forEach(gerenciador => {
                 gerenciador.adicionarContato(nome, telefone, email);
             });
         }
 
-        /**
-         * Remove um contato.
-         * @param {string} nome - O nome do contato.
-         */
+        //Remove um contato
         removerContato(nome) {
             this.gerenciadores.forEach(gerenciador => {
                 gerenciador.removerContato(nome);
             });
         }
 
-        /**
-         * Lista todos os contatos.
-         */
         listarContatos() {
             this.gerenciadores.forEach(gerenciador => {
                 gerenciador.listarContatos();
             });
         }
 
-        /**
-         * Busca um contato.
-         * @param {string} nome - O nome do contato.
-         */
+      
+
         buscarContato(nome) {
             this.gerenciadores.forEach(gerenciador => {
                 gerenciador.buscarContato(nome);
             });
         }
     }
+
+    //Note que na classe de cima, eu estou utilizando métodos que são implementados em outras classes, isso é o padrão de projetos Facade
 
     const gerenciadorContatos = new GerenciadorContatos();
     const gerenciador = new GerenciadorContatosFacade();
